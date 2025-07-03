@@ -5,7 +5,7 @@
 package gui;
 
 import javax.swing.JOptionPane;
-import model.ApplicationManager;
+import model.SystemManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -206,7 +206,11 @@ public class EMS extends javax.swing.JFrame {
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         String name = departmentNameTextField.getText();
         if (!name.isBlank()) {
-            ApplicationManager.departmentManager.create(name);
+            try {
+                SystemManager.departmentManager.createDepartment(name);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             departmentNameTextField.setText("");
         } else {
             JOptionPane.showMessageDialog(
@@ -221,7 +225,11 @@ public class EMS extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         String name = deleteDepartmentTextField.getText();
         if (!name.isBlank()) {
-            ApplicationManager.departmentManager.delete(name);
+            try {
+                SystemManager.departmentManager.deleteDepartment(name);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             deleteDepartmentTextField.setText("");
         } else {
             JOptionPane.showMessageDialog(
@@ -236,25 +244,26 @@ public class EMS extends javax.swing.JFrame {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         String name = departmentSearchField.getText();
         if (!name.isBlank()) {
-            ResultSet rs = ApplicationManager.departmentManager.search(name);
-            String id;
-            String department;
-            String created_at;
-            String updated_at;
+            ResultSet rs;
             try {
+                rs = (ResultSet) SystemManager.departmentManager.searchDepartment(name);
+                String id;
+                String department;
+                String created_at;
+                String updated_at;
                 if (rs.next()) {
                     id = rs.getString(1);
                     department = rs.getString(2);
                     created_at = rs.getString(3);
                     updated_at = rs.getString(4);
                     detailsTextArea.setText(
-                            "department id: " + id + 
-                            "\ndepartment name: " + department +                                   
-                            "\ndepartment created at: " + created_at +
-                            "\ndepartment updated at: " + updated_at
+                            "department id: " + id
+                            + "\ndepartment name: " + department
+                            + "\ndepartment created at: " + created_at
+                            + "\ndepartment updated at: " + updated_at
                     );
                 }
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
             departmentSearchField.setText("");
