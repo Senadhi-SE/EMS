@@ -72,6 +72,7 @@ public class EmployeeManager {
         if (count == 0) {
             return "Failed";
         } else {
+            BarcodeGenerator.generateEmployeeBarcode(nic);
             return "success";
         }
     }
