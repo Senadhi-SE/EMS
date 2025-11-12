@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80">
+  <!-- Building Icon with rounded style -->
+  <g transform="translate(10, 12)">
+    <!-- Main building body -->
+    <rect x="0" y="8" width="48" height="52" rx="6" fill="#6366F1"/>
+    <!-- Roof -->
+    <path d="M 24 0 L 0 12 L 48 12 Z" fill="#4F46E5"/>
+    <!-- Windows (cute grid pattern) -->
+    <rect x="8" y="20" width="10" height="10" rx="2" fill="#818CF8" opacity="0.6"/>
+    <rect x="30" y="20" width="10" height="10" rx="2" fill="#818CF8" opacity="0.6"/>
+    <rect x="8" y="34" width="10" height="10" rx="2" fill="#818CF8" opacity="0.6"/>
+    <rect x="30" y="34" width="10" height="10" rx="2" fill="#818CF8" opacity="0.6"/>
+    <!-- Door with arch -->
+    <rect x="18" y="48" width="12" height="12" rx="2" fill="#312E81"/>
+    <circle cx="24" cy="48" r="6" fill="#312E81"/>
+  </g>
+  
+  <!-- EMS Text with modern styling -->
+  <text x="72" y="54" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="white" letter-spacing="2">EMS</text>
+  
+  <!-- Subtle accent dot -->
+  <circle cx="222" cy="50" r="4" fill="#6366F1" opacity="0.8"/>
+</svg>
