@@ -5,6 +5,17 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.SalaryProcessForm;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import model.SystemManager;
 
 /**
  *
@@ -20,7 +31,7 @@ public class SalaryPanel extends javax.swing.JPanel {
     public SalaryPanel() {
         initComponents();
         initUI();
-
+        loadTable();
     }
 
     /**
@@ -36,11 +47,11 @@ public class SalaryPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        salaryButton = new javax.swing.JButton();
         jComboBox3 = new javax.swing.JComboBox<>();
         jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        salaryTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
         jComboBox2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -65,15 +76,15 @@ public class SalaryPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(102, 51, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Add a Scheduele");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        salaryButton.setBackground(new java.awt.Color(102, 51, 255));
+        salaryButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        salaryButton.setForeground(new java.awt.Color(255, 255, 255));
+        salaryButton.setText("Add a Salary payment");
+        salaryButton.setBorderPainted(false);
+        salaryButton.setFocusPainted(false);
+        salaryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                salaryButtonActionPerformed(evt);
             }
         });
 
@@ -91,18 +102,26 @@ public class SalaryPanel extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        salaryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "salary_id", "year", "month", "employee_id", "fname", "lname", "nic", "gross_amount", "deductions", "paid_amount", "created_at"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(salaryTable);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(84, 84, 84));
@@ -130,7 +149,7 @@ public class SalaryPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(27, 27, 27)
-                        .addComponent(jButton3)))
+                        .addComponent(salaryButton)))
                 .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
@@ -139,7 +158,7 @@ public class SalaryPanel extends javax.swing.JPanel {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(salaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -159,9 +178,10 @@ public class SalaryPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void salaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salaryButtonActionPerformed
+        SalaryProcessForm df = new SalaryProcessForm(null, true);
+        df.setVisible(true);
+    }//GEN-LAST:event_salaryButtonActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
@@ -169,20 +189,120 @@ public class SalaryPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton salaryButton;
+    private javax.swing.JTable salaryTable;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 
     private void initUI() {
         searchIcon = new FlatSVGIcon("resources//search-icon.svg", 20, 20);
         searchButton.setIcon(searchIcon);
+    }
+
+    private void loadSalaryDataToTable(ResultSet rs) {
+        try {
+            // 1. Cast the table's model and clear previous data
+            // NOTE: Replace 'departmentTable' with your actual JTable component name (e.g., 'salaryTable')
+            DefaultTableModel model = (DefaultTableModel) salaryTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // 2. Iterate through the ResultSet
+            while (rs.next()) {
+                // Create a Vector to hold the data for the current row.
+                Vector<Object> rowData = new Vector<>();
+
+                // Fetch data using the 11 column aliases from the 'search' SELECT query:
+                // s.id AS salary_id
+                rowData.add(rs.getInt("salary_id"));
+
+                // s.year
+                rowData.add(rs.getInt("year"));
+
+                // s.month
+                rowData.add(rs.getString("month"));
+
+                // s.employee_id
+                rowData.add(rs.getInt("employee_id"));
+
+                // e.fname
+                rowData.add(rs.getString("fname"));
+
+                // e.lname
+                rowData.add(rs.getString("lname"));
+
+                // e.nic
+                rowData.add(rs.getString("nic"));
+
+                // s.gross_amount (Use getDouble for currency/amount)
+                rowData.add(rs.getDouble("gross_amount"));
+
+                // s.deductions (Use getDouble for currency/amount)
+                rowData.add(rs.getDouble("deductions"));
+
+                // paid_amount (This is the calculated net salary)
+                rowData.add(rs.getDouble("paid_amount"));
+
+                // s.created_at
+                rowData.add(rs.getString("created_at"));
+
+                model.addRow(rowData);
+            }
+
+            // 3. Center-align cell contents (NOTE: Replace 'departmentTable' with 'salaryTable')
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+            for (int i = 0; i < salaryTable.getColumnCount(); i++) {
+                salaryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            // Handle database access errors
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTable() {
+        // 1. Get the current month name
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
+        String currentMonthName = today.format(monthFormatter);
+
+        ResultSet salaryResultSet = null;
+        try {
+            // 2. Call the search method using the current month name
+            // Assuming your 'search' method belongs to the SalaryManager class.
+            salaryResultSet = SystemManager.getSalaryManager().search(currentMonthName);
+
+            // 3. Call the table loading method
+            // NOTE: Replace this with the actual name of your table loading method.
+            // Based on your previous request, I'll use loadSalaryDataToTable.
+            loadSalaryDataToTable(salaryResultSet);
+
+        } catch (NullPointerException | IllegalArgumentException e) {
+            // Handles validation exceptions thrown by the search method (e.g., if month is invalid)
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Validation Error: " + e.getMessage(),
+                    "Data Load Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } catch (Exception e) {
+            // Handles SQLExceptions or other general exceptions
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "An error occurred while loading salary data: " + e.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 }

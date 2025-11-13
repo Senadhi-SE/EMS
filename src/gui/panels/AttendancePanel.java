@@ -5,6 +5,17 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.ApplicantForm;
+import gui.dialogs.MarkInForm;
+import gui.dialogs.MarkOutForm;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Vector;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import model.SystemManager;
 
 /**
  *
@@ -20,6 +31,7 @@ public class AttendancePanel extends javax.swing.JPanel {
     public AttendancePanel() {
         initComponents();
         initUI();
+        loadTable();
     }
 
     /**
@@ -34,10 +46,10 @@ public class AttendancePanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        markInButton = new javax.swing.JButton();
+        markOutButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        attendanceTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
@@ -58,42 +70,50 @@ public class AttendancePanel extends javax.swing.JPanel {
         searchButton.setBorderPainted(false);
         searchButton.setFocusPainted(false);
 
-        jButton3.setBackground(new java.awt.Color(0, 153, 51));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Mark In");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        markInButton.setBackground(new java.awt.Color(0, 153, 51));
+        markInButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        markInButton.setForeground(new java.awt.Color(255, 255, 255));
+        markInButton.setText("Mark In");
+        markInButton.setBorderPainted(false);
+        markInButton.setFocusPainted(false);
+        markInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                markInButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(204, 153, 0));
-        jButton4.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Mark Out");
-        jButton4.setBorderPainted(false);
-        jButton4.setFocusPainted(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        markOutButton.setBackground(new java.awt.Color(204, 153, 0));
+        markOutButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        markOutButton.setForeground(new java.awt.Color(255, 255, 255));
+        markOutButton.setText("Mark Out");
+        markOutButton.setBorderPainted(false);
+        markOutButton.setFocusPainted(false);
+        markOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                markOutButtonActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "attendance_id", "employee_id", "fname", "lname", "nic", "year", "month", "in", "out"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(attendanceTable);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(84, 84, 84));
@@ -111,15 +131,14 @@ public class AttendancePanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(markInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
+                        .addComponent(markOutButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,8 +146,8 @@ public class AttendancePanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(markInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(markOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -146,29 +165,98 @@ public class AttendancePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void markInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markInButtonActionPerformed
+        MarkInForm df = new MarkInForm(null, true);
+        df.setVisible(true);
+        loadTable();
+    }//GEN-LAST:event_markInButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void markOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markOutButtonActionPerformed
+        MarkOutForm df = new MarkOutForm(null, true);
+        df.setVisible(true);
+        loadTable();
+    }//GEN-LAST:event_markOutButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JTable attendanceTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton markInButton;
+    private javax.swing.JButton markOutButton;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 
     private void initUI() {
         searchIcon = new FlatSVGIcon("resources//search-icon.svg", 20, 20);
         searchButton.setIcon(searchIcon);
+    }
+
+    private void loadTable() {
+
+        // 1. Get today's date
+        LocalDate today = LocalDate.now();
+
+        // 2. Define the required format (yyyy-MM-dd)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 3. Format today's date into the required String format
+        String todayDateString = today.format(formatter);
+        
+        try {
+            loadAttendanceDataToTable(SystemManager.getAttendanceManager().getAttendanceByDate(todayDateString));
+        } catch (Exception ex) {
+//            System.out.println("Error in form: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private void loadAttendanceDataToTable(ResultSet rs) {
+        try {
+            // 1. Cast the table's model and clear previous data
+            // NOTE: Replace 'departmentTable' with your actual JTable component name (e.g., 'attendanceTable')
+            DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // 2. Iterate through the ResultSet
+            while (rs.next()) {
+                // Create a Vector to hold the data for the current row
+                Vector<Object> rowData = new Vector<>();
+
+                // Fetch and add data using the column aliases from your SELECT query:
+                // The ResultSet stores data based on column aliases, so use them here.
+                rowData.add(rs.getInt("attendance_id"));
+                rowData.add(rs.getInt("employee_id"));
+                rowData.add(rs.getString("fname"));
+                rowData.add(rs.getString("lname"));
+                rowData.add(rs.getString("nic"));
+                rowData.add(rs.getString("year"));
+                rowData.add(rs.getString("month"));
+                // Use getString() or getTimestamp() for 'in' and 'out' times
+                rowData.add(rs.getString("in"));
+                rowData.add(rs.getString("out"));
+
+                // Add the calculated duration (optional, for demonstration)
+                // If you want to calculate duration, you'd need the Timestamp objects:
+                // long duration = rs.getTimestamp("out").getTime() - rs.getTimestamp("in").getTime();
+                // rowData.add(Duration.ofMillis(duration).toMinutes() + " min");
+                model.addRow(rowData);
+            }
+
+            // 3. Center-align cell contents (NOTE: Replace 'departmentTable' with 'attendanceTable')
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+            for (int i = 0; i < attendanceTable.getColumnCount(); i++) {
+                attendanceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            // Handle database access errors
+            e.printStackTrace();
+        }
     }
 
 }

@@ -5,6 +5,14 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.SheduleForm;
+import java.util.Vector;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import model.SystemManager;
 
 /**
  *
@@ -15,9 +23,9 @@ public class ScheduelePanel extends javax.swing.JPanel {
     /**
      * Creates new form ScheduelePanel
      */
-
     public ScheduelePanel() {
         initComponents();
+        loadTable();
     }
 
     /**
@@ -31,36 +39,44 @@ public class ScheduelePanel extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        scheduleTable = new javax.swing.JTable();
+        schedueleButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        scheduleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "schedule_id", "date", "time", "applicant_id", "fname", "lname", "nic", "email", "mobile", "position_id"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
 
-        jButton3.setBackground(new java.awt.Color(102, 51, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Add a Scheduele");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(scheduleTable);
+
+        schedueleButton.setBackground(new java.awt.Color(102, 51, 255));
+        schedueleButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        schedueleButton.setForeground(new java.awt.Color(255, 255, 255));
+        schedueleButton.setText("Add a Scheduele");
+        schedueleButton.setBorderPainted(false);
+        schedueleButton.setFocusPainted(false);
+        schedueleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                schedueleButtonActionPerformed(evt);
             }
         });
 
@@ -80,7 +96,7 @@ public class ScheduelePanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3))
+                        .addComponent(schedueleButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
                 .addGap(30, 30, 30))
         );
@@ -90,7 +106,7 @@ public class ScheduelePanel extends javax.swing.JPanel {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schedueleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addGap(21, 21, 21))
@@ -99,16 +115,102 @@ public class ScheduelePanel extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void schedueleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schedueleButtonActionPerformed
+        SheduleForm df = new SheduleForm(null, true);
+        df.setVisible(true);
+        loadTable();
+    }//GEN-LAST:event_schedueleButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton schedueleButton;
+    private javax.swing.JTable scheduleTable;
     // End of variables declaration//GEN-END:variables
+
+    private void loadScheduleDataToTable(ResultSet rs) {
+        try {
+
+            // 1. Get the model and clear existing rows
+            DefaultTableModel model = (DefaultTableModel) scheduleTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // 2. Iterate through the ResultSet
+            while (rs.next()) {
+                // Create a Vector to hold the data for the current row.
+                Vector<Object> rowData = new Vector<>();
+
+                // Fetch data using the 10 column aliases from the SELECT query:
+                // s.id AS schedule_id
+                rowData.add(rs.getInt("schedule_id"));
+
+                // s.date (Assuming yyyy-MM-dd format)
+                rowData.add(rs.getString("date"));
+
+                // s.time (Assuming HH:mm format)
+                rowData.add(rs.getString("time"));
+
+                // a.id AS applicant_id
+                rowData.add(rs.getInt("applicant_id"));
+
+                // a.fname
+                rowData.add(rs.getString("fname"));
+
+                // a.lname
+                rowData.add(rs.getString("lname"));
+
+                // a.nic
+                rowData.add(rs.getString("nic"));
+
+                // a.email
+                rowData.add(rs.getString("email"));
+
+                // a.mobile
+                rowData.add(rs.getString("mobile"));
+
+                // a.position_id
+                rowData.add(rs.getInt("position_id"));
+
+                model.addRow(rowData);
+            }
+
+            // 3. Center-align cell contents
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+            for (int i = 0; i < scheduleTable.getColumnCount(); i++) {
+                scheduleTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            // Handle database access errors
+            e.printStackTrace();
+            // Optionally, display an error message to the user
+        }
+    }
+
+    private void loadTable() {
+        ResultSet scheduleResultSet = null;
+        try {
+            // Fetch the ResultSet containing all schedule data
+            // Assuming the ScheduleManager is accessed via SystemManager
+            scheduleResultSet = SystemManager.getScheduleManager().getAllSchedules();
+
+            // Pass the fetched ResultSet to the data loading method
+            loadScheduleDataToTable(scheduleResultSet);
+
+        } catch (Exception e) {
+            // Handle potential exceptions from getAllSchedules (e.g., database connection issues)
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    null,
+                    "An error occurred while fetching schedule data: " + e.getMessage(),
+                    "System Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } 
+    }
+
 }

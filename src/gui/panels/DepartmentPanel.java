@@ -8,7 +8,14 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import gui.Dashboard2;
 import gui.dialogs.DepartmentForm;
 import java.awt.Frame;
-
+import java.util.Vector;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.SystemManager;
 /**
  *
  * @author senad
@@ -21,7 +28,7 @@ public class DepartmentPanel extends javax.swing.JPanel {
     public DepartmentPanel() {
         initComponents();
         initUI();
-        
+        loadTable();
     }
 
     /**
@@ -38,7 +45,7 @@ public class DepartmentPanel extends javax.swing.JPanel {
         searchButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        departmentTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
@@ -66,17 +73,25 @@ public class DepartmentPanel extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setForeground(new java.awt.Color(51, 51, 51));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        departmentTable.setForeground(new java.awt.Color(51, 51, 51));
+        departmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"test", "test", "test", null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "department name", "status", "created_at"
             }
-        ));
-        jTable1.setFocusable(false);
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        departmentTable.setFocusable(false);
+        jScrollPane1.setViewportView(departmentTable);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(84, 84, 84));
@@ -97,8 +112,7 @@ public class DepartmentPanel extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
                         .addGap(446, 446, 446)
                         .addComponent(jButton2)))
@@ -126,15 +140,16 @@ public class DepartmentPanel extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DepartmentForm df = new DepartmentForm(Dashboard2, true);
         df.setVisible(true);
+        loadTable();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable departmentTable;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
@@ -143,4 +158,42 @@ public class DepartmentPanel extends javax.swing.JPanel {
         searchIcon = new FlatSVGIcon("resources//search-icon.svg", 20, 20);
         searchButton.setIcon(searchIcon);
     }
+
+    private void loadTable() {
+        try {
+            loadDataToTable(SystemManager.getDepartmentManager().searchDepartment());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void loadDataToTable(ResultSet rs) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // Explicitly fetch each column as String from ResultSet and store in a Vector
+            while (rs.next()) {
+                Vector<String> rowData = new Vector<>();
+                rowData.add(rs.getString("id"));
+                rowData.add(rs.getString("department_name"));
+                rowData.add(rs.getString("status"));
+                rowData.add(rs.getString("created_at"));
+
+                model.addRow(rowData);
+            }
+
+            // Center-align all cell contents
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+            for (int i = 0; i < departmentTable.getColumnCount(); i++) {
+                departmentTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

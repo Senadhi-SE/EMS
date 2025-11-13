@@ -2,6 +2,7 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.ApplicantForm;
 import java.awt.Frame;
 
 public class ApplicantPanel extends javax.swing.JPanel {
@@ -62,6 +63,11 @@ public class ApplicantPanel extends javax.swing.JPanel {
         jButton3.setText("Add a department");
         jButton3.setBorderPainted(false);
         jButton3.setFocusPainted(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(51, 51, 51));
@@ -146,6 +152,11 @@ public class ApplicantPanel extends javax.swing.JPanel {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ApplicantForm df = new ApplicantForm(null, true);
+        df.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,6 +3,8 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.EmployeeForm;
+import gui.dialogs.PositionForm;
 import java.awt.Frame;
 
 /**
@@ -141,7 +143,8 @@ public class EmployeePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        EmployeeForm pf = new EmployeeForm(null, true);
+        pf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

@@ -4,6 +4,11 @@
  */
 package gui.dialogs;
 
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import model.SystemManager;
+
 /**
  *
  * @author senad
@@ -16,6 +21,7 @@ public class SalaryProcessForm extends javax.swing.JDialog {
     public SalaryProcessForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        netSalaryField.setEditable(false);
     }
 
     /**
@@ -28,8 +34,8 @@ public class SalaryProcessForm extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        paySalaryButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
@@ -38,15 +44,15 @@ public class SalaryProcessForm extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        yearField = new javax.swing.JFormattedTextField();
+        monthComboBox = new javax.swing.JComboBox<>();
+        nicField = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        grossSalaryField = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        deductionField = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField();
+        netSalaryField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create a department");
@@ -57,19 +63,29 @@ public class SalaryProcessForm extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 0));
-        jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cancel");
-        jButton2.setBorderPainted(false);
-        jButton2.setFocusPainted(false);
+        cancelButton.setBackground(new java.awt.Color(0, 0, 0));
+        cancelButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(255, 255, 255));
+        cancelButton.setText("Cancel");
+        cancelButton.setBorderPainted(false);
+        cancelButton.setFocusPainted(false);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
-        jButton3.setBackground(new java.awt.Color(102, 51, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Create Position");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
+        paySalaryButton.setBackground(new java.awt.Color(102, 51, 255));
+        paySalaryButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        paySalaryButton.setForeground(new java.awt.Color(255, 255, 255));
+        paySalaryButton.setText("Pay Salary");
+        paySalaryButton.setBorderPainted(false);
+        paySalaryButton.setFocusPainted(false);
+        paySalaryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paySalaryButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Poppins SemiBold", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(58, 58, 58));
@@ -98,29 +114,45 @@ public class SalaryProcessForm extends javax.swing.JDialog {
         jLabel3.setText("Month *");
         jPanel3.add(jLabel3);
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        jPanel3.add(jFormattedTextField1);
+        yearField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        yearField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearFieldActionPerformed(evt);
+            }
+        });
+        jPanel3.add(yearField);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
-        jPanel3.add(jComboBox3);
+        monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        jPanel3.add(monthComboBox);
 
         jLabel11.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(76, 76, 76));
         jLabel11.setText("Gross Amount *");
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        grossSalaryField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        grossSalaryField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                grossSalaryFieldKeyReleased(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(76, 76, 76));
         jLabel12.setText("Deductions *");
 
-        jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        deductionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        deductionField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                deductionFieldKeyReleased(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(76, 76, 76));
         jLabel13.setText("New Salaray (Calculated)*");
 
-        jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        netSalaryField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        netSalaryField.setText("0.00");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -134,10 +166,10 @@ public class SalaryProcessForm extends javax.swing.JDialog {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1)
-                    .addComponent(jFormattedTextField2)
-                    .addComponent(jFormattedTextField3)
-                    .addComponent(jFormattedTextField4))
+                    .addComponent(nicField)
+                    .addComponent(grossSalaryField)
+                    .addComponent(deductionField)
+                    .addComponent(netSalaryField))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -146,21 +178,21 @@ public class SalaryProcessForm extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nicField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(grossSalaryField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(deductionField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                .addComponent(netSalaryField, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
 
@@ -177,9 +209,9 @@ public class SalaryProcessForm extends javax.swing.JDialog {
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(234, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(paySalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)))
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -197,8 +229,8 @@ public class SalaryProcessForm extends javax.swing.JDialog {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(paySalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
 
@@ -207,6 +239,123 @@ public class SalaryProcessForm extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void paySalaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paySalaryButtonActionPerformed
+        // 1. Retrieve and Validate Text Fields
+        String year;
+        String monthName;
+        String nic;
+        double grossAmount;
+        double deductions;
+
+        try {
+            // YEAR Validation
+            year = yearField.getText().trim();
+            if (year.isEmpty()) {
+                throw new Exception("Year field cannot be empty.");
+            }
+
+            // MONTH Validation (assuming JComboBox is populated with full month names)
+            monthName = (String) monthComboBox.getSelectedItem();
+            if (monthName == null || monthName.trim().isEmpty()) {
+                throw new Exception("Please select a month.");
+            }
+
+            // NIC Validation
+            nic = nicField.getText().trim();
+            if (nic.isEmpty()) {
+                throw new Exception("NIC field cannot be empty.");
+            }
+
+            // GROSS AMOUNT Validation and Parsing
+            grossAmount = parseAmountField(grossSalaryField, "Gross Salary");
+
+            // DEDUCTIONS Validation and Parsing
+            deductions = parseAmountField(deductionField, "Deductions");
+
+        } catch (Exception e) {
+            // Display validation error to the user
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Validation Failed: " + e.getMessage(),
+                    "Input Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return; // Stop execution
+        }
+
+        // 2. Call the Manager Method
+        try {
+            String result = SystemManager.getSalaryManager().createSalaryRecord(
+                    year,
+                    monthName,
+                    nic,
+                    grossAmount,
+                    deductions
+            );
+
+            // 3. Handle the Result String
+            String message;
+            int messageType;
+
+            switch (result) {
+                case "success":
+                    message = "Salary record successfully created and paid.";
+                    messageType = JOptionPane.INFORMATION_MESSAGE;
+                    this.dispose();
+                    break;
+                case "employee_not_found":
+                    message = "Error: Employee with NIC '" + nic + "' was not found.";
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+                case "salary_record_already_exists":
+                    message = "Error: Salary for " + monthName + " " + year + " has already been paid to this employee.";
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+                case "cannot_pay_salary_due_to_low_attendance_and_leave_count":
+                    message = "Payment denied: Employee does not meet the minimum attendance/leave requirement (20 days).";
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+                case "Failed":
+                    message = "Operation failed. Database insertion returned 0 rows affected.";
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+                default:
+                    message = "Unknown error occurred.";
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+            }
+
+            JOptionPane.showMessageDialog(this, message, "Salary Payment", messageType);
+
+        } catch (Exception e) {
+            // Catch exceptions thrown by the manager method itself (e.g., database connection issues, 
+            // internal validation in the manager method, etc.)
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "A system error occurred during salary processing: " + e.getMessage(),
+                    "System Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_paySalaryButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void grossSalaryFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_grossSalaryFieldKeyReleased
+        calculateNetSalary();
+    }//GEN-LAST:event_grossSalaryFieldKeyReleased
+
+    private void deductionFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deductionFieldKeyReleased
+        calculateNetSalary();
+    }//GEN-LAST:event_deductionFieldKeyReleased
+
+    private void yearFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yearFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -266,13 +415,9 @@ public class SalaryProcessForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
-    private javax.swing.JFormattedTextField jFormattedTextField4;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JFormattedTextField deductionField;
+    private javax.swing.JFormattedTextField grossSalaryField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -285,6 +430,61 @@ public class SalaryProcessForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<String> monthComboBox;
+    private javax.swing.JFormattedTextField netSalaryField;
+    private javax.swing.JTextField nicField;
+    private javax.swing.JButton paySalaryButton;
+    private javax.swing.JFormattedTextField yearField;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Helper method to safely retrieve a numeric value from a JTextField.
+     * Returns 0.0 if the field is empty or contains non-numeric characters.
+     */
+    private double getNumericValue(JTextField field) {
+        String text = field.getText().trim();
+        if (text.isEmpty()) {
+            return 0.0;
+        }
+        try {
+            // Use Double.parseDouble to handle decimal values
+            return Double.parseDouble(text);
+        } catch (NumberFormatException e) {
+            // Optionally, log the error or show a warning to the user 
+            // about invalid characters.
+            return 0.0;
+        }
+    }
+
+    /**
+     * Calculates the Net Salary and updates the Net Salary field.
+     */
+    private void calculateNetSalary() {
+        // 1. Get safe numeric values from the two source fields
+        double grossSalary = getNumericValue(grossSalaryField);
+        double deductions = getNumericValue(deductionField);
+
+        // 2. Perform the calculation: netsalary = grosssalary - deductions
+        double netSalary = grossSalary - deductions;
+
+        // 3. Update the netSalaryField with the result (formatted to two decimal places)
+        netSalaryField.setText(String.format("%.2f", netSalary));
+    }
+
+    /**
+     * Helper method to safely parse a double from a text field. Throws an
+     * exception if the format is invalid or if the field is empty/null.
+     */
+    private double parseAmountField(JFormattedTextField field, String fieldName) throws Exception {
+        String text = field.getText();
+        if (text == null || text.trim().isEmpty()) {
+            throw new Exception(fieldName + " cannot be empty.");
+        }
+        try {
+            return Double.parseDouble(text.trim());
+        } catch (NumberFormatException e) {
+            throw new Exception("Invalid format for " + fieldName + ". Please enter a valid number.");
+        }
+    }
+
 }

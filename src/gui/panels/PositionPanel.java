@@ -5,6 +5,7 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.PositionForm;
 
 /**
  *
@@ -121,7 +122,8 @@ public class PositionPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        PositionForm pf = new PositionForm(null, true);
+        pf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

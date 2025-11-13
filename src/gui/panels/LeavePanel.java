@@ -5,6 +5,17 @@
 package gui.panels;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import gui.dialogs.LeaveForm;
+import gui.dialogs.MarkOutForm;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Vector;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import model.SystemManager;
 
 /**
  *
@@ -20,6 +31,7 @@ public class LeavePanel extends javax.swing.JPanel {
     public LeavePanel() {
         initComponents();
         initUI();
+        loadTable();
     }
 
     /**
@@ -35,9 +47,9 @@ public class LeavePanel extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jComboBox3 = new javax.swing.JComboBox<>();
         searchButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        leaveButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        leavesTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
@@ -62,30 +74,38 @@ public class LeavePanel extends javax.swing.JPanel {
         searchButton.setBorderPainted(false);
         searchButton.setFocusPainted(false);
 
-        jButton3.setBackground(new java.awt.Color(102, 51, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Add a Scheduele");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        leaveButton.setBackground(new java.awt.Color(102, 51, 255));
+        leaveButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        leaveButton.setForeground(new java.awt.Color(255, 255, 255));
+        leaveButton.setText("Add a Leave");
+        leaveButton.setBorderPainted(false);
+        leaveButton.setFocusPainted(false);
+        leaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                leaveButtonActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        leavesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "leave_id", "employee_id", "fname", "lname", "nic", "date", "reason"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(leavesTable);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(84, 84, 84));
@@ -111,7 +131,7 @@ public class LeavePanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(leaveButton)))
                 .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,7 +140,7 @@ public class LeavePanel extends javax.swing.JPanel {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -139,25 +159,108 @@ public class LeavePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void leaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveButtonActionPerformed
+        LeaveForm df = new LeaveForm(null, true);
+        df.setVisible(true);
+        loadTable();
+    }//GEN-LAST:event_leaveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton leaveButton;
+    private javax.swing.JTable leavesTable;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 
     private void initUI() {
         searchIcon = new FlatSVGIcon("resources//search-icon.svg", 20, 20);
         searchButton.setIcon(searchIcon);
+    }
+
+    private void loadLeaveDataToTable(ResultSet rs) {
+        try {
+            // 1. Cast the table's model and clear previous data
+            // NOTE: Replace 'departmentTable' with your actual JTable component name (e.g., 'leavesTable')
+            DefaultTableModel model = (DefaultTableModel) leavesTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // 2. Iterate through the ResultSet
+            while (rs.next()) {
+                // Create a Vector to hold the data for the current row. 
+                // Using Object here is safer than String, though String works if all data is converted.
+                Vector<Object> rowData = new Vector<>();
+
+                // Fetch data using the 7 column aliases from the 'searchLeaves' SELECT query:
+                // l.id AS leave_id
+                rowData.add(rs.getInt("leave_id"));
+
+                // l.employee_id
+                rowData.add(rs.getInt("employee_id"));
+
+                // e.fname
+                rowData.add(rs.getString("fname"));
+
+                // e.lname
+                rowData.add(rs.getString("lname"));
+
+                // e.nic
+                rowData.add(rs.getString("nic"));
+
+                // l.date
+                rowData.add(rs.getString("date")); // Date can be fetched as String
+
+                // l.reason
+                rowData.add(rs.getString("reason"));
+
+                model.addRow(rowData);
+            }
+
+            // 3. Center-align cell contents (NOTE: Replace 'departmentTable' with 'leavesTable')
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+            for (int i = 0; i < leavesTable.getColumnCount(); i++) {
+                leavesTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            // Handle database access errors
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTable() {
+        // Assuming this code resides in a class that has access to loadLeaveDataToTable method.
+
+// 1. Get the current date
+        LocalDate today = LocalDate.now();
+
+// 2. Define a formatter to get the full month name (e.g., "November")
+// MMMM represents the full month name. Using Locale.ENGLISH ensures it matches 
+// the validation in your searchLeaves method.
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
+
+// 3. Format the date to get the month name
+        String currentMonthName = today.format(monthFormatter); // Example result: "November"
+
+        try {
+            // 4. Call the searchLeaves method with the current month's name
+            ResultSet leaveResultSet = SystemManager.getLeaveManager().searchLeaves(currentMonthName);
+
+            // 5. Pass the resulting ResultSet to the table loading method
+            loadLeaveDataToTable(leaveResultSet);
+
+        } catch (Exception e) {
+            // Handle the Exceptions (NullPointerException, IllegalArgumentException, SQLException) 
+            // that the searchLeaves method might throw.
+            System.err.println("Error loading leave data: " + e.getMessage());
+            // Optionally show a JOptionPane message to the user
+        }
     }
 
 }

@@ -4,6 +4,12 @@
  */
 package gui.dialogs;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import model.AttendanceManager;
+import model.SystemManager;
+
 /**
  *
  * @author senad
@@ -16,6 +22,7 @@ public class MarkOutForm extends javax.swing.JDialog {
     public MarkOutForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        initUI();
     }
 
     /**
@@ -28,8 +35,8 @@ public class MarkOutForm extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        markOutButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
@@ -37,7 +44,7 @@ public class MarkOutForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        dateTimeField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create a department");
@@ -48,29 +55,29 @@ public class MarkOutForm extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 0));
-        jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cancel");
-        jButton2.setBorderPainted(false);
-        jButton2.setFocusPainted(false);
+        cancelButton.setBackground(new java.awt.Color(0, 0, 0));
+        cancelButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(255, 255, 255));
+        cancelButton.setText("Cancel");
+        cancelButton.setBorderPainted(false);
+        cancelButton.setFocusPainted(false);
 
-        jButton3.setBackground(new java.awt.Color(242, 167, 44));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Mark In");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        markOutButton.setBackground(new java.awt.Color(242, 167, 44));
+        markOutButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        markOutButton.setForeground(new java.awt.Color(255, 255, 255));
+        markOutButton.setText("Mark Out");
+        markOutButton.setBorderPainted(false);
+        markOutButton.setFocusPainted(false);
+        markOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                markOutButtonActionPerformed(evt);
             }
         });
 
         jLabel2.setFont(new java.awt.Font("Poppins SemiBold", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(58, 58, 58));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("Mark In Time");
+        jLabel2.setText("Mark Out Time");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jSeparator1.setForeground(new java.awt.Color(219, 219, 219));
@@ -87,11 +94,11 @@ public class MarkOutForm extends javax.swing.JDialog {
         jLabel4.setForeground(new java.awt.Color(76, 76, 76));
         jLabel4.setText("Current Date & Time");
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG))));
-        jFormattedTextField2.setText("20/11/2025");
-        jFormattedTextField2.addActionListener(new java.awt.event.ActionListener() {
+        dateTimeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG))));
+        dateTimeField.setText("20/11/2025");
+        dateTimeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField2ActionPerformed(evt);
+                dateTimeFieldActionPerformed(evt);
             }
         });
 
@@ -105,7 +112,7 @@ public class MarkOutForm extends javax.swing.JDialog {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField2))
+                    .addComponent(dateTimeField))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -118,7 +125,7 @@ public class MarkOutForm extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -135,9 +142,9 @@ public class MarkOutForm extends javax.swing.JDialog {
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(markOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)))
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -155,8 +162,8 @@ public class MarkOutForm extends javax.swing.JDialog {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(markOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
@@ -166,13 +173,40 @@ public class MarkOutForm extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFormattedTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField2ActionPerformed
+    private void dateTimeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateTimeFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField2ActionPerformed
+    }//GEN-LAST:event_dateTimeFieldActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void markOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markOutButtonActionPerformed
+        String nic = jTextField2.getText();
+        if (nic.isBlank()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "nic field cannot be empty!",
+                    "Validation Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            jTextField2.requestFocus(); // optionally set focus back to the field
+            return; // stop further execution
+        }
+
+        AttendanceManager am = SystemManager.getAttendanceManager();
+
+        try {
+            String msg = am.markOutTime(nic);
+            if (!msg.equals("success")) {
+                JOptionPane.showMessageDialog(
+                        this, // parent component (use 'null' if not inside a JFrame/JDialog)
+                        "Action failed! Please try again.", // message
+                        "Error", // title
+                        JOptionPane.ERROR_MESSAGE // icon type
+                );
+            }
+            this.dispose();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_markOutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,9 +314,8 @@ public class MarkOutForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JFormattedTextField dateTimeField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -291,5 +324,23 @@ public class MarkOutForm extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton markOutButton;
     // End of variables declaration//GEN-END:variables
+
+    private void initUI() {
+        // 1. Get the current date and time
+        LocalDateTime now = LocalDateTime.now();
+
+        //format
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+
+        // 3. Create a formatter object
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+        // 4. Format the date and time object
+        String formattedDateTime = now.format(formatter);
+
+        dateTimeField.setText(formattedDateTime);
+        dateTimeField.setEnabled(false);
+    }
 }
