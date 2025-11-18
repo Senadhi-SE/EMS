@@ -18,6 +18,7 @@ import gui.panels.SalaryPanel;
 import gui.panels.ScheduelePanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import javax.swing.SwingUtilities;
 
 /**
@@ -29,6 +30,7 @@ public class Dashboard2 extends javax.swing.JFrame {
     private boolean isCollapsed = false;
     private final int EXPANDED_WIDTH = 200;
     private final int COLLAPSED_WIDTH = 95;
+    private final int MENU_ICO_SIZE = 20;
     private FlatSVGIcon collapseIcon;
     private FlatSVGIcon expandIcon;
     private FlatSVGIcon departmentIcon;
@@ -53,24 +55,25 @@ public class Dashboard2 extends javax.swing.JFrame {
 
     private void InitialiseUi() {
         setExtendedState(Dashboard2.MAXIMIZED_BOTH);
-        homeIcon = new FlatSVGIcon("resources//home.svg", 30, 30);
+        homeIcon = new FlatSVGIcon("resources//home.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         homeButton.setIcon(homeIcon);
-        departmentIcon = new FlatSVGIcon("resources//sitemap.svg", 30, 30);
+        departmentIcon = new FlatSVGIcon("resources//sitemap.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         departmentButton.setIcon(departmentIcon);
-        positionIcon = new FlatSVGIcon("resources//briefcase.svg", 30, 30);
+        positionIcon = new FlatSVGIcon("resources//briefcase.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         positionButton.setIcon(positionIcon);
-        employeesIcon = new FlatSVGIcon("resources//users.svg", 31, 28);
+        employeesIcon = new FlatSVGIcon("resources//users.svg", MENU_ICO_SIZE, MENU_ICO_SIZE - 3);
         employeeManagementButton.setIcon(employeesIcon);
-        applicantIcon = new FlatSVGIcon("resources//user-plus.svg", 31, 28);
+        applicantIcon = new FlatSVGIcon("resources//user-plus.svg", MENU_ICO_SIZE, MENU_ICO_SIZE - 3);
         applicantButton.setIcon(applicantIcon);
-        attendanceIcon = new FlatSVGIcon("resources//calendar-check.svg", 30, 30);
+        attendanceIcon = new FlatSVGIcon("resources//calendar-check.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         attendanceButton.setIcon(attendanceIcon);
-        leaveIcon = new FlatSVGIcon("resources//calendar-times.svg", 30, 30);
+        leaveIcon = new FlatSVGIcon("resources//calendar-times.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         leaveManagementButton.setIcon(leaveIcon);
-        schedueleIcon = new FlatSVGIcon("resources//clock.svg", 30, 30);
+        schedueleIcon = new FlatSVGIcon("resources//clock.svg", MENU_ICO_SIZE, MENU_ICO_SIZE);
         schedueleButton.setIcon(schedueleIcon);
-        salaryIcon = new FlatSVGIcon("resources//dollar-sign.svg", 30, 32);
+        salaryIcon = new FlatSVGIcon("resources//dollar-sign.svg", MENU_ICO_SIZE, MENU_ICO_SIZE + 3);
         salaryButton.setIcon(salaryIcon);
+
         logoIcon = new FlatSVGIcon("resources//building.svg", 28, 35);
         logoLabel.setIcon(logoIcon);
         logoutIcon = new FlatSVGIcon("resources//logout.svg", 30, 30);
@@ -112,9 +115,12 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        closeButton = new javax.swing.JButton();
+        minimizeButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(31, 41, 55));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 494));
@@ -123,7 +129,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.setLayout(new java.awt.GridLayout(9, 1));
 
         homeButton.setBackground(new java.awt.Color(31, 41, 55));
+        homeButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        homeButton.setForeground(new java.awt.Color(255, 255, 255));
+        homeButton.setText("  Dashboard");
         homeButton.setFocusPainted(false);
+        homeButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         homeButton.setOpaque(true);
         homeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,7 +143,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(homeButton);
 
         departmentButton.setBackground(new java.awt.Color(31, 41, 55));
+        departmentButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        departmentButton.setForeground(new java.awt.Color(255, 255, 255));
+        departmentButton.setText("  Departments");
         departmentButton.setFocusPainted(false);
+        departmentButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         departmentButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 departmentButtonActionPerformed(evt);
@@ -142,7 +156,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(departmentButton);
 
         positionButton.setBackground(new java.awt.Color(31, 41, 55));
+        positionButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        positionButton.setForeground(new java.awt.Color(255, 255, 255));
+        positionButton.setText("  Positions");
         positionButton.setFocusPainted(false);
+        positionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         positionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 positionButtonActionPerformed(evt);
@@ -151,7 +169,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(positionButton);
 
         employeeManagementButton.setBackground(new java.awt.Color(31, 41, 55));
+        employeeManagementButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        employeeManagementButton.setForeground(new java.awt.Color(255, 255, 255));
+        employeeManagementButton.setText("  Employees");
         employeeManagementButton.setFocusPainted(false);
+        employeeManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         employeeManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employeeManagementButtonActionPerformed(evt);
@@ -160,7 +182,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(employeeManagementButton);
 
         applicantButton.setBackground(new java.awt.Color(31, 41, 55));
+        applicantButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        applicantButton.setForeground(new java.awt.Color(255, 255, 255));
+        applicantButton.setText("  Applicants");
         applicantButton.setFocusPainted(false);
+        applicantButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         applicantButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 applicantButtonActionPerformed(evt);
@@ -169,7 +195,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(applicantButton);
 
         attendanceButton.setBackground(new java.awt.Color(31, 41, 55));
+        attendanceButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        attendanceButton.setForeground(new java.awt.Color(255, 255, 255));
+        attendanceButton.setText("  Attendance");
         attendanceButton.setFocusPainted(false);
+        attendanceButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         attendanceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attendanceButtonActionPerformed(evt);
@@ -178,7 +208,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(attendanceButton);
 
         leaveManagementButton.setBackground(new java.awt.Color(31, 41, 55));
+        leaveManagementButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        leaveManagementButton.setForeground(new java.awt.Color(255, 255, 255));
+        leaveManagementButton.setText("  Leave");
         leaveManagementButton.setFocusPainted(false);
+        leaveManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         leaveManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leaveManagementButtonActionPerformed(evt);
@@ -187,7 +221,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(leaveManagementButton);
 
         schedueleButton.setBackground(new java.awt.Color(31, 41, 55));
+        schedueleButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        schedueleButton.setForeground(new java.awt.Color(255, 255, 255));
+        schedueleButton.setText("  Schedule");
         schedueleButton.setFocusPainted(false);
+        schedueleButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         schedueleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 schedueleButtonActionPerformed(evt);
@@ -196,7 +234,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel7.add(schedueleButton);
 
         salaryButton.setBackground(new java.awt.Color(31, 41, 55));
+        salaryButton.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        salaryButton.setForeground(new java.awt.Color(255, 255, 255));
+        salaryButton.setText("  Salary");
         salaryButton.setFocusPainted(false);
+        salaryButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         salaryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salaryButtonActionPerformed(evt);
@@ -243,11 +285,11 @@ public class Dashboard2 extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
                 .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +298,7 @@ public class Dashboard2 extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(logoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -275,10 +317,10 @@ public class Dashboard2 extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGap(18, 20, Short.MAX_VALUE)
                 .addComponent(logoutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -294,6 +336,41 @@ public class Dashboard2 extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(17, 17, 17));
         jLabel1.setText("Employee Management System");
 
+        closeButton.setBorder(null);
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                closeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                closeButtonMouseExited(evt);
+            }
+        });
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+        FlatSVGIcon editIcon = new FlatSVGIcon("resources//close2.svg", 28,28);
+        closeButton.setIcon(editIcon);
+
+        minimizeButton.setForeground(new java.awt.Color(255, 255, 255));
+        minimizeButton.setBorder(null);
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseExited(evt);
+            }
+        });
+        minimizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minimizeButtonActionPerformed(evt);
+            }
+        });
+        FlatSVGIcon minimizeIcon = new FlatSVGIcon("resources//minimize.svg", 18,2);
+        minimizeButton.setIcon(minimizeIcon);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -301,7 +378,10 @@ public class Dashboard2 extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                .addComponent(minimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,6 +389,11 @@ public class Dashboard2 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minimizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
@@ -389,6 +474,34 @@ public class Dashboard2 extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(jPanel5);
     }//GEN-LAST:event_salaryButtonActionPerformed
 
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_closeButtonActionPerformed
+
+    private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
+
+        FlatSVGIcon editIcon = new FlatSVGIcon("resources//close.svg", 28, 28);
+        closeButton.setIcon(editIcon);
+
+    }//GEN-LAST:event_closeButtonMouseEntered
+
+    private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
+        FlatSVGIcon editIcon = new FlatSVGIcon("resources//close2.svg", 28, 28);
+        closeButton.setIcon(editIcon);
+    }//GEN-LAST:event_closeButtonMouseExited
+
+    private void minimizeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_minimizeButtonMouseEntered
+
+    private void minimizeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_minimizeButtonMouseExited
+
+    private void minimizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeButtonActionPerformed
+        this.setState(Frame.ICONIFIED);
+    }//GEN-LAST:event_minimizeButtonActionPerformed
+
     private void toggleButton() {
         if (isCollapsed) {
             // Expand the sidebar
@@ -446,6 +559,7 @@ public class Dashboard2 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton applicantButton;
     private javax.swing.JButton attendanceButton;
+    private javax.swing.JButton closeButton;
     private javax.swing.JButton departmentButton;
     private javax.swing.JButton employeeManagementButton;
     private javax.swing.JButton homeButton;
@@ -461,6 +575,7 @@ public class Dashboard2 extends javax.swing.JFrame {
     private javax.swing.JLabel logoLabel;
     private javax.swing.JButton logoutButton;
     private javax.swing.JPanel logoutPanel;
+    private javax.swing.JButton minimizeButton;
     private javax.swing.JButton positionButton;
     private javax.swing.JButton salaryButton;
     private javax.swing.JButton schedueleButton;

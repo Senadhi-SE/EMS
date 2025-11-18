@@ -7,6 +7,7 @@ package gui.panels;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import gui.Dashboard2;
 import gui.dialogs.DepartmentForm;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.Vector;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,7 +16,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 import model.SystemManager;
+import util.Utility;
+
 /**
  *
  * @author senad
@@ -29,7 +35,12 @@ public class DepartmentPanel extends javax.swing.JPanel {
         initComponents();
         initUI();
         loadTable();
+
+        Utility.customizeTable(departmentTable);
+        
     }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,6 +58,8 @@ public class DepartmentPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         departmentTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        editButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -73,10 +86,13 @@ public class DepartmentPanel extends javax.swing.JPanel {
             }
         });
 
+        departmentTable.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         departmentTable.setForeground(new java.awt.Color(51, 51, 51));
         departmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, "32131", null, null},
+                {null, "fdsafda", null, null},
+                {null, "fdsfafdafdsfa", null, null}
             },
             new String [] {
                 "id", "department name", "status", "created_at"
@@ -91,6 +107,7 @@ public class DepartmentPanel extends javax.swing.JPanel {
             }
         });
         departmentTable.setFocusable(false);
+        departmentTable.setRowHeight(28);
         jScrollPane1.setViewportView(departmentTable);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
@@ -98,6 +115,32 @@ public class DepartmentPanel extends javax.swing.JPanel {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Department Management");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        editButton.setBackground(new java.awt.Color(0, 204, 51));
+        editButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        editButton.setForeground(new java.awt.Color(255, 255, 255));
+        editButton.setBorderPainted(false);
+        editButton.setFocusPainted(false);
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+        FlatSVGIcon editIcon = new FlatSVGIcon("resources//edit2.svg", 20, 20);
+        editButton.setIcon(editIcon);
+
+        deleteButton.setBackground(new java.awt.Color(51, 51, 51));
+        deleteButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(255, 255, 255));
+        deleteButton.setBorderPainted(false);
+        deleteButton.setFocusPainted(false);
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        FlatSVGIcon deleteIcon = new FlatSVGIcon("resources//delete2.svg", 18, 18);
+        deleteButton.setIcon(deleteIcon);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -113,8 +156,12 @@ public class DepartmentPanel extends javax.swing.JPanel {
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
-                        .addGap(446, 446, 446)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+                        .addGap(350, 350, 350)
+                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)))
                 .addGap(30, 30, 30))
         );
@@ -122,9 +169,12 @@ public class DepartmentPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
@@ -143,9 +193,19 @@ public class DepartmentPanel extends javax.swing.JPanel {
         loadTable();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteButton;
     private javax.swing.JTable departmentTable;
+    private javax.swing.JButton editButton;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -185,7 +245,7 @@ public class DepartmentPanel extends javax.swing.JPanel {
 
             // Center-align all cell contents
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+            centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);
 
             for (int i = 0; i < departmentTable.getColumnCount(); i++) {
                 departmentTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
