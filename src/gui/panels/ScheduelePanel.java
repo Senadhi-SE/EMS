@@ -61,7 +61,7 @@ public class ScheduelePanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "schedule_id", "date", "time", "applicant_id", "fname", "lname", "nic", "email", "mobile", "position_id"
+                "  schedule_id", "  date", "  time", "  applicant_id", "  fname", "  lname", "  nic", "  email", "  mobile", "  position_id"
             }
         ) {
             boolean[] canEdit = new boolean [] {

@@ -23,11 +23,11 @@ public class Utility {
          */
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(new java.awt.Font("Segoe UI", 1, 18));
+        header.setFont(new java.awt.Font("Segoe UI", 1, 14));
         header.setPreferredSize(new Dimension(header.getWidth(), 40));
         ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
 
-        table.setFont(new java.awt.Font("Segoe UI", 0, 16));
+        table.setFont(new java.awt.Font("Segoe UI", 0, 14));
         table.setRowHeight(28);
 
         // Center-align all cell contents

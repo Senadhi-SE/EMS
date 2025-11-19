@@ -107,7 +107,7 @@ public class AttendancePanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "attendance_id", "employee_id", "fname", "lname", "nic", "year", "month", "in", "out"
+                "  attendance_id", "  employee_id", "  fname", " lname", "  nic", "  year", "  month", "  in", "  out"
             }
         ) {
             boolean[] canEdit = new boolean [] {

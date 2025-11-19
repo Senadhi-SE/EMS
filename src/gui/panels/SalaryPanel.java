@@ -128,6 +128,10 @@ public class SalaryPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(salaryTable);
+        if (salaryTable.getColumnModel().getColumnCount() > 0) {
+            salaryTable.getColumnModel().getColumn(1).setPreferredWidth(25);
+            salaryTable.getColumnModel().getColumn(2).setPreferredWidth(25);
+        }
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(84, 84, 84));
